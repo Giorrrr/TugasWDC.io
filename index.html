@@ -585,7 +585,7 @@
                         <h5 class="title-left">Send Message Us</h5>
                       </div>
                       <div>
-                        <form action="" method="post">
+                        <form name="Tugas-WDC">
                           <div class="row">
                             <div class="col-md-12 mb-3">
                               <div class="form-group">
@@ -603,20 +603,23 @@
                               </div>
                             </div>
                             <div class="col-md-12">
-                              <div class="form-group">
+                              <div class="form-group mb-3">
                                 <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
                               </div>
                             </div>
-                            <div class="col-md-12 text-center my-3">
-                              <div class="loading">Loading</div>
-                              <div class="error-message"></div>
-                              <div class="sent-message">Your message has been sent. Thank you!</div>
-                            </div>
                             <div class="col-md-12 text-center">
-                              <button type="submit" class="button button-a button-big button-rouded">Send Message</button>
+                              <button type="submit" class="button button-a btn-kirim button-big button-rouded mb-3">Send Message</button>
+                              <button class="btn btn-primary btn-loading d-none mb-3" type="button" disabled>
+                                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                                Loading...
+                              </button>
                             </div>
                           </div>
                         </form>
+                        <div class="alert alert-primary alert-dismissible fade show d-none my-alert" role="alert">
+                          <strong>Thank you!</strong> Your message has been sent.
+                          <button type="button" class="btn-close my-alert" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
                       </div>
                     </div>
                     <div class="col-md-6">
@@ -693,6 +696,34 @@
 
     <div id="preloader"></div>
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Contact Form -->
+    <script>
+      const scriptURL = "https://script.google.com/macros/s/AKfycbz2gRHwjmbgOqms-DW-3L1SezuffuTBaCzJUXk2DhZalrWvEgx76iqCMXnb-_jl5tpg/exec";
+      const form = document.forms["Tugas-WDC"];
+      const btnKirim = document.querySelector(".btn-kirim");
+      const btnLoading = document.querySelector(".btn-loading");
+      const myAlert = document.querySelector(".my-alert");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        // efek tombol submit
+        btnLoading.classList.toggle("d-none");
+        btnKirim.classList.toggle("d-none");
+        fetch(scriptURL, { method: "POST", body: new FormData(form) })
+          .then((response) => {
+            // tampilan seperti semula
+            btnLoading.classList.toggle("d-none");
+            btnKirim.classList.toggle("d-none");
+            // menampilkan alert
+            myAlert.classList.toggle("d-none");
+            // reset form
+            form.reset();
+            console.log("Success!", response);
+          })
+          .catch((error) => console.error("Error!", error.message));
+      });
+    </script>
 
     <!-- Vendor JS Files -->
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
